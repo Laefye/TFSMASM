@@ -1,0 +1,33 @@
+.external &external
+.view &view
+.data [00000000000000000000000000000000]
+.include "messages.tfsm"
+
+send_message:
+    RET
+
+external:
+    CALL &get_body
+    BLEN
+    IPUSH8 0
+        CME RJMF &external_analys_message
+        HALT
+    external_analys_message:
+    MKSLICE
+    IREAD64 BREAD SWAP IREAD64 BREAD SWAP DROPN #1
+    ; receiver, body
+    IPUSH8 0 BPUSH "" CHG #0 #2 
+    SEND
+    HALT
+
+view:
+    LDATA
+    MKSLICE
+    IREAD64
+    SWAP
+    IREAD64
+    BREAD
+    CHG #0 #2
+    DROPN #2
+    HALT
+

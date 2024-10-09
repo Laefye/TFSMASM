@@ -1,0 +1,20 @@
+read_message:
+    MESSAGE ; [type, sender, receiver, init, opcode, data, timestamp]
+    MKSLICE
+    IREAD8
+    SWAP
+    IREAD64 BREAD CHG SWAP
+    IREAD64 BREAD CHG SWAP
+    IREAD64 BREAD CHG SWAP
+    IREAD64 SWAP
+    IREAD64 BREAD CHG SWAP
+    IREAD64 SWAP
+    DROPN #1
+    RET
+    
+
+get_body:
+    CALL &read_message ; type, sender, receiver, init, opcode, data, timestamp
+    CHG #1 #6
+    DROPN #6
+    RET
